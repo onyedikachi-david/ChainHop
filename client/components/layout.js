@@ -7,7 +7,6 @@ import Image from "next/image";
 import React, { useState } from "react";
 import { NavBar } from "../components";
 import { logo, sun } from "../public/assets";
-import Layout from "../components/layout";
 const Icon = ({ styles, name, imgUrl, isActive, disabled, handleClick }) => (
   <div
     className={`h-[48px] w-[48px] rounded-[10px] hover:bg-[#2c2f32] ${
@@ -62,13 +61,17 @@ const SideBar = () => {
   );
 };
 
-export default function Home() {
+function Layout({ children }) {
   return (
-    <Layout>
-      <div className="mx-auto max-w-[1280px] flex-1 max-sm:w-full sm:pr-5">
-        <NavBar />
-        <Link href="/home">Home</Link>
+    <>
+      <div className=" sm:-8 relative flex min-h-screen flex-row bg-[#13131a] p-4">
+        <div className="relative mr-10 hidden sm:flex">
+          <SideBar />
+          {children}
+        </div>
       </div>
-    </Layout>
+    </>
   );
 }
+
+export default Layout;
