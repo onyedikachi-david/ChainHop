@@ -64,11 +64,9 @@ const SideBar = () => {
 
 export default function Home() {
   return (
-    <Layout>
-      <div className="mx-auto max-w-[1280px] flex-1 max-sm:w-full sm:pr-5">
-        <NavBar />
-        <Link href="/home">Home</Link>
-      </div>
-    </Layout>
+    <div className="mx-auto max-w-[1280px] flex-1 max-sm:w-full sm:pr-5">
+      <NavBar />
+      <Link href="/home">Home</Link>
+    </div>
   );
 }
