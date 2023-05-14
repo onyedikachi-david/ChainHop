@@ -38,7 +38,7 @@ const SideBar = () => {
         <Icon styles="w-[52px] h-[52px] bg-[#2c2f32]" imgUrl={logo} />
       </Link>
 
-      <div className="mt-12 flex w-[76px] flex-1 flex-col items-center justify-between rounded-[20px] bg-[#1c1c24] py-4">
+      <div className="mt-12 flex hidden w-[76px] flex-1 flex-col items-center justify-between rounded-[20px] bg-[#1c1c24] py-4 md:block">
         <div className="flex flex-col items-center justify-center gap-3">
           {navlinks.map((link) => (
             <Icon

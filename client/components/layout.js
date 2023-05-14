@@ -33,7 +33,7 @@ const SideBar = () => {
   const [isActive, setIsActive] = useState("dashboard");
 
   return (
-    <div className="sticky top-5 flex h-[93vh] flex-col items-center justify-between">
+    <div className="sticky top-5 hidden h-[93vh] items-center justify-between md:block lg:flex-col">
       <Link href="/">
         <Icon styles="w-[52px] h-[52px] bg-[#2c2f32]" imgUrl={logo} />
       </Link>
@@ -65,7 +65,7 @@ function Layout({ children }) {
   return (
     <>
       <div className=" sm:-8 relative flex min-h-screen flex-row bg-[#13131a] p-4">
-        <div className="relative mr-10 hidden sm:flex">
+        <div className="relative mr-10 sm:flex">
           <SideBar />
           {children}
         </div>
