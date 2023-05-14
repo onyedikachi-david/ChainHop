@@ -6,12 +6,20 @@ const apiKey = process.env.NODEREAL_API_KEY;
 
 const chainEndpoints = [
   {
-    chain: "Binance",
+    chain: "Binance Mainnet",
     url: `https://bsc-mainnet.nodereal.io/v1/${apiKey}`,
   },
   {
-    chain: "Ethereum",
+    chain: "Binance Testnet",
+    url: `https://bsc-testnet.nodereal.io/v1/${apiKey}`,
+  },
+  {
+    chain: "Ethereum Mainnet",
     url: `https://eth-mainnet.nodereal.io/v1/${apiKey}`,
+  },
+  {
+    chain: "Goerli Testnet",
+    url: `https://eth-goerli.nodereal.io/v1/${apiKey}`,
   },
   {
     chain: "Polygon",

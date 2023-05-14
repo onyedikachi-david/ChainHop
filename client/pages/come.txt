@@ -24,7 +24,7 @@
                       </p>
                       <p>
                         <span className="font-semibold">Status:</span>{" "}
-                        {ethers.BigNumber.from(result.result.status).toNumber()
+                        {ethers.BigNumber.from(transaction[0].status).toNumber()
                           ? "Success"
                           : "Error"}
                       </p>

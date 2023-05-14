@@ -1,15 +1,8 @@
-import { ConnectWallet } from "@thirdweb-dev/react";
-import Link from "next/link";
 import React, { useState } from "react";
-import { NavBar } from "../components";
-import Layout from "../components/layout";
 import axios from "axios";
 import { ethers } from "ethers";
-// import TransactionDetails from "../components/transactiondetails";
 const TransactionDetails = ({ transaction }) => {
-  // const { ... } = transaction;
   console.log("6.1---->", transaction[0].from);
-  // console.log("6---->", from);
   const [activeTab, setActiveTab] = useState("details");
 
   const handleTabClick = (tab) => {
@@ -139,7 +132,6 @@ export default function Home() {
 
           return transaction.data.result;
         });
-        // setTimeout(setResults([myT]), 10000);
         console.log("3---->", myT);
         console.log("3.1---->", transactionDataList);
         console.log("3---->", myT);
@@ -159,15 +151,13 @@ export default function Home() {
 
   return (
     <div className="mx-auto max-w-[1280px] flex-1 max-sm:w-full sm:pr-5">
-      {/* <Layout> */}
-      {/* <NavBar /> */}
       <div className="container mx-auto p-4">
-        <h1 className="mb-4 text-2xl font-bold text-white">
-          MultiChain Explorer
+        <h1 className="mb-4 text-center text-4xl font-bold text-purple-400">
+          ChainHop: MultiChain Explorer
         </h1>
         {chain ? (
           <h1 className="mb-4 text-2xl font-bold text-white">
-            Found on {chain} BlockChain
+            Yoh!! Found the transaction on: {chain}
           </h1>
         ) : (
           <h1></h1>
@@ -188,9 +178,12 @@ export default function Home() {
           </button>
         </div>
         {loading ? (
-          <div className="text-center">
-            <p className="text-gray-500">Loading...</p>
-          </div>
+          <svg
+            class="h-16 w-16 animate-spin rounded-full border-b-2 border-white text-center"
+            viewBox="0 0 24 24"
+          >
+            Where are you actually
+          </svg>
         ) : (
           results.length > 0 && <TransactionDetails transaction={results} />
         )}{" "}
