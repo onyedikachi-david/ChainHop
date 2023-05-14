@@ -66,7 +66,7 @@
   
  ## Tech Stack 
   
- BQuesti is built using the following technologies: 
+ Boxpay and ChainHop are built using the following technologies: 
   
  **Client:** NextJs, RainBowKit, TailwindCSS, Wagmi,  
   
