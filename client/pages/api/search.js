@@ -1,139 +1,95 @@
 const axios = require("axios");
 require("dotenv").config();
-// Array of chain endpoints
+const { ethers } = require("ethers");
+
 const apiKey = process.env.NODEREAL_API_KEY;
 
 const chainEndpoints = [
-  `https://bsc-mainnet.nodereal.io/v1/${apiKey}`,
-  `https://eth-mainnet.nodereal.io/v1/${apiKey}`,
-  `https://polygon-mainnet.nodereal.io/v1/${apiKey}`,
+  {
+    chain: "Binance",
+    url: `https://bsc-mainnet.nodereal.io/v1/${apiKey}`,
+  },
+  {
+    chain: "Ethereum",
+    url: `https://eth-mainnet.nodereal.io/v1/${apiKey}`,
+  },
+  {
+    chain: "Polygon",
+    url: `https://polygon-mainnet.nodereal.io/v1/${apiKey}`,
+  },
+  {
+    chain: "Optimism",
+    url: `https://opt-mainnet.nodereal.io/v1/${apiKey}`,
+  },
+  {
+    chain: "Avalanche-C",
+    url: `https://open-platform.nodereal.io/${apiKey}/avalanche-c/ext/bc/C/rpc`,
+  },
+  {
+    chain: "Arbitrum",
+    url: `https://open-platform.nodereal.io/${apiKey}/arbitrum/`,
+  },
+  {
+    chain: "Arbitrum-Nitro",
+    url: `https://open-platform.nodereal.io/${apiKey}/arbitrum-nitro/`,
+  },
+  {
+    chain: "Fantom",
+    url: `https://open-platform.nodereal.io/${apiKey}/fantom/`,
+  },
 ];
-// console.log(process.env);
 
-// const options = {
-//   method: "POST",
-//   url: endpoint,
-//   headers: {
-//     accept: "application/json",
-//     "content-type": "application/json",
-//   },
-//   data: {
-//     id: 1,
-//     jsonrpc: "2.0",
-//     params: [hash],
-//     method: "eth_getTransactionReceipt",
-//   },
-// };
+async function fetchTransactionReceipt(endpoint, hash) {
+  const options = {
+    method: "POST",
+    url: endpoint.url,
+    headers: {
+      accept: "application/json",
+      "content-type": "application/json",
+    },
+    data: {
+      id: 1,
+      jsonrpc: "2.0",
+      params: [hash],
+      method: "eth_getTransactionReceipt",
+    },
+  };
 
-// const makeRequest = () => {
-//   return new Promise((resolve, reject) => {
-//     axios
-//       .request(options)
-//       .then(function (response) {
-//         resolve(response);
-//       })
-//       .catch(function (error) {
-//         reject(error);
-//       });
-//   });
-// };
-
-async function searchTransactionByHash(hash) {
-  console.log("hash---->", hash);
-  const results = [];
-
-  // Perform search on each chain
-  for (const endpoint of chainEndpoints) {
-    try {
-      // const options = {
-      //   method: "POST",
-      //   url: endpoint,
-      //   headers: {
-      //     accept: "application/json",
-      //     "content-type": "application/json",
-      //   },
-      //   data: {
-      //     id: 1,
-      //     jsonrpc: "2.0",
-      //     params: [hash],
-      //     method: "eth_getTransactionReceipt",
-      //   },
-      // };
-
-      // const makeRequest = () => {
-      //   return new Promise((resolve, reject) => {
-      //     axios
-      //       .request(options)
-      //       .then(function (response) {
-      //         resolve(response);
-      //       })
-      //       .catch(function (error) {
-      //         reject(error);
-      //       });
-      //   });
-      // };
-      // const response = null;
-      const options = {
-        method: "POST",
-        url: endpoint,
-        headers: {
-          accept: "application/json",
-          "content-type": "application/json",
-        },
-        data: {
-          id: 1,
-          jsonrpc: "2.0",
-          params: [hash],
-          method: "eth_getTransactionReceipt",
-        },
-      };
-
-      axios
-        .request(options)
-        .then(function (response) {
-          response = response;
-          // console.log(response.data);
-        })
-        .catch(function (error) {
-          // console.error(error);
-        });
-      const response = await axios.post(options.url, options.data, {
-        headers: options.headers,
-      });
-      // const response = await makeRequest();
-      // console.log(response.data);
-      const transactions = response.data;
-      console.log("Hey ------> ", transactions);
-
-      // Add valid results to the array
-      if (transactions.result !== null) {
-        results.push(transactions);
-      }
-      // if (Array.isArray(transactions) && transactions.length > 0) {
-      //   console.log(transactions);
-      //   results.push(
-      //     ...transactions.map((transaction) => ({
-      //       transactionId: transaction.id,
-      //       chain: endpoint,
-      //       // Add more transaction details as needed
-      //     }))
-      //   );
-      // }
-    } catch (error) {
-      console.error(`Error querying chain ${endpoint}:`, error.message);
-    }
+  try {
+    const response = await axios.post(options.url, options.data, {
+      headers: options.headers,
+    });
+    return { chain: endpoint.chain, data: response.data };
+  } catch (error) {
+    console.error(`Error querying chain ${endpoint.chain}:`, error.message);
+    throw error;
   }
+}
 
-  return results;
+function filterValidTransactions(transactions) {
+  return transactions.filter(
+    (transaction) => transaction.data.result !== null && !transaction.data.error
+  );
 }
 
 export default async function handler(req, res) {
   const { hash } = req.query;
 
   try {
-    const results = await searchTransactionByHash(hash);
-    console.log("Result from ---> ", results);
-    res.status(200).json(results);
+    const requests = chainEndpoints.map((endpoint) =>
+      fetchTransactionReceipt(endpoint, hash)
+    );
+
+    const responses = await Promise.allSettled(requests);
+
+    const results = responses
+      .filter((response) => response.status === "fulfilled")
+      .map((response) => response.value);
+
+    const validTransactions = filterValidTransactions(results);
+
+    console.log("Valid Transactions:", validTransactions);
+    res.status(200).json(validTransactions);
   } catch (error) {
     console.error("Error during search:", error.message);
     res.status(500).json({ error: "An error occurred during the search" });

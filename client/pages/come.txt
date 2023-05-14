@@ -1,0 +1,129 @@
+ <div className="box-border block border-solid">
+              {results.map((result) => {
+                console.log("5---->", results);
+                return (
+                  <div
+                    key={result.id}
+                    className="mb-4 rounded border p-4 text-teal-50 drop-shadow-lg"
+                  >
+                    <h2 className="text-lg font-semibold">
+                      Transaction Details
+                    </h2>
+                    <div className="mt-4 flex flex-col space-y-4 ">
+                      {/* <p>
+                      <span className="font-semibold">Type:</span>{" "}
+                      {ethers.BigNumber.from(result.result.type).toNumber()}
+                    </p> */}
+                      <p>
+                        <span className="font-semibold">From:</span>{" "}
+                        {result.result.from}
+                      </p>
+                      <p>
+                        <span className="font-semibold">To:</span>{" "}
+                        {result.result.to}
+                      </p>
+                      <p>
+                        <span className="font-semibold">Status:</span>{" "}
+                        {ethers.BigNumber.from(result.result.status).toNumber()
+                          ? "Success"
+                          : "Error"}
+                      </p>
+                      <p>
+                        <span className="font-semibold">
+                          Cumulative Gas Used:
+                        </span>{" "}
+                        {ethers.BigNumber.from(
+                          result.result.cumulativeGasUsed
+                        ).toNumber()}
+                      </p>
+                      <p>
+                        {/* <span className="font-semibold">Logs Bloom:</span>{" "}
+                      {result.result.logsBloom} */}
+                      </p>
+                      <div className="mt-4 rounded border p-4">
+                        {/* <h3 className="text-lg font-semibold">Logs</h3>
+                      {result.result.logs.map((log, index) => (
+                        <div key={index} className="mt-4 border-t pt-4">
+                          <p>
+                            <span className="font-semibold">Address:</span>{" "}
+                            {log.address}
+                          </p>
+                          <p>
+                            <span className="font-semibold">Topics:</span>{" "}
+                            {log.topics.join(", ")}
+                          </p>
+                          <p>
+                            <span className="font-semibold">Data:</span>{" "}
+                            {log.data}
+                          </p>
+                          <p>
+                            <span className="font-semibold">Block Number:</span>{" "}
+                            {log.blockNumber}
+                          </p>
+                          <p>
+                            <span className="font-semibold">
+                              Transaction Hash: {log.transactionHash}
+                            </span>
+                          </p>
+                          <p>
+                            <span className="font-semibold">
+                              Transaction Index:
+                            </span>{" "}
+                            {log.transactionIndex}
+                          </p>
+                          <p>
+                            <span className="font-semibold">Block Hash:</span>{" "}
+                            {log.blockHash}
+                          </p>
+                          <p>
+                            <span className="font-semibold">Log Index:</span>{" "}
+                            {log.logIndex}
+                          </p>
+                        </div>
+                      ))} */}
+                      </div>
+                      <p>
+                        <span className="font-semibold">Transaction Hash:</span>{" "}
+                        {result.result.transactionHash}
+                      </p>
+                      <p>
+                        <span className="font-semibold">Contract Address:</span>{" "}
+                        {result.result.contractAddress || "N/A"}
+                      </p>
+                      <p>
+                        <span className="font-semibold">Gas Used:</span>{" "}
+                        {ethers.BigNumber.from(
+                          result.result.gasUsed
+                        ).toNumber()}
+                      </p>
+                      <p>
+                        <span className="font-semibold">Block Hash:</span>{" "}
+                        {result.result.blockHash}
+                      </p>
+                      <p>
+                        <span className="font-semibold">Block Number:</span>{" "}
+                        {ethers.BigNumber.from(
+                          result.result.blockNumber
+                        ).toNumber()}
+                      </p>
+                      <p>
+                        <span className="font-semibold">
+                          Transaction Index:
+                        </span>{" "}
+                        {ethers.BigNumber.from(
+                          result.result.transactionIndex
+                        ).toNumber()}
+                      </p>
+                      <p>
+                        <span className="font-semibold">
+                          Effective Gas Price:
+                        </span>{" "}
+                        {ethers.BigNumber.from(
+                          result.result.effectiveGasPrice
+                        ).toNumber()}
+                      </p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
